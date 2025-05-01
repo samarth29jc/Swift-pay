@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -44,23 +43,16 @@ const cardSchema = z.object({
   return validateExpiryDate(data.expiryMonth, data.expiryYear);
 }, {
   message: 'Card is expired',
-  path: ['expiryYear'] // Path to the field with the error
+  path: ['expiryYear']
 });
 
-type CardFormValues = z.infer<typeof cardSchema>;
-
-interface CardFormProps {
-  onSubmit: (data: CardFormValues) => Promise<void>;
-  isSubmitting?: boolean;
-}
-
-export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
+export function CardForm({ onSubmit, isSubmitting = false }) {
   const [formattedCardNumber, setFormattedCardNumber] = useState('');
   const [showCardNumber, setShowCardNumber] = useState(false);
   const [showCVV, setShowCVV] = useState(false);
   const [cardType, setCardType] = useState('');
   
-  const form = useForm<CardFormValues>({
+  const form = useForm({
     resolver: zodResolver(cardSchema),
     defaultValues: {
       cardHolderName: '',
@@ -73,7 +65,7 @@ export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
     },
   });
 
-  const detectCardType = (number: string) => {
+  const detectCardType = (number) => {
     // Basic card type detection based on IIN ranges
     const cleanNumber = number.replace(/\D/g, '');
     if (cleanNumber.startsWith('4')) {
@@ -88,7 +80,7 @@ export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
     return '';
   };
 
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCardNumberChange = (e) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 16);
     const formatted = formatCardNumber(value);
     setFormattedCardNumber(formatted);
@@ -98,7 +90,7 @@ export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
     setCardType(detectCardType(value));
   };
 
-  const handleSubmission = async (values: CardFormValues) => {
+  const handleSubmission = async (values) => {
     try {
       await onSubmit(values);
     } catch (error) {
@@ -263,15 +255,7 @@ export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
               <FormItem>
                 <FormLabel>Currency</FormLabel>
                 <FormControl>
-                  <select 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    {...field}
-                  >
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                    <option value="JPY">JPY</option>
-                  </select>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -279,13 +263,12 @@ export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
           />
         </div>
 
-        <Button 
-          type="submit" 
-          className="w-full"
-          disabled={isSubmitting}
-        >
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
-            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</>
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
           ) : (
             'Pay Now'
           )}
@@ -293,4 +276,4 @@ export function CardForm({ onSubmit, isSubmitting = false }: CardFormProps) {
       </form>
     </Form>
   );
-}
+} 

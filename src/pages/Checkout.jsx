@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
@@ -17,7 +16,7 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Handle server-to-server payment submission
-  const handleS2SSubmit = async (data: any) => {
+  const handleS2SSubmit = async (data) => {
     setIsSubmitting(true);
     try {
       // Generate a random order ID
@@ -87,7 +86,7 @@ const Checkout = () => {
   };
 
   // Handle iframe payment status updates
-  const handleIframePaymentStatus = (status: 'success' | 'failed' | 'pending', orderId: string) => {
+  const handleIframePaymentStatus = (status, orderId) => {
     // Create a transaction from the iframe payment
     const transactionId = addTransaction({
       cardHolderName: 'Iframe Payment',
@@ -167,4 +166,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default Checkout; 

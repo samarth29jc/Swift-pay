@@ -1,15 +1,9 @@
-
 import React from 'react';
-import { Transaction } from '@/context/PaymentContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { TransactionStatusBadge } from './TransactionStatusBadge';
 import { maskCardNumber } from '@/lib/card-validation';
 
-interface TransactionCardProps {
-  transaction: Transaction;
-}
-
-export function TransactionCard({ transaction }: TransactionCardProps) {
+export function TransactionCard({ transaction }) {
   const {
     id,
     cardHolderName,
@@ -23,7 +17,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
     updatedAt
   } = transaction;
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
@@ -80,4 +74,4 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
       </CardContent>
     </Card>
   );
-}
+} 

@@ -1,14 +1,7 @@
-
 import React from 'react';
-import { Transaction } from '@/context/PaymentContext';
 import { TransactionCard } from './TransactionCard';
 
-interface TransactionListProps {
-  transactions: Transaction[];
-  loading?: boolean;
-}
-
-export function TransactionList({ transactions, loading = false }: TransactionListProps) {
+export function TransactionList({ transactions, loading = false }) {
   if (loading) {
     return (
       <div className="space-y-4 animate-pulse">
@@ -34,4 +27,4 @@ export function TransactionList({ transactions, loading = false }: TransactionLi
       ))}
     </div>
   );
-}
+} 

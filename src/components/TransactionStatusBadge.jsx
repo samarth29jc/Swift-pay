@@ -1,15 +1,8 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { TransactionStatus } from '@/context/PaymentContext';
 import { Check, Clock3, XCircle } from 'lucide-react';
 
-interface TransactionStatusBadgeProps {
-  status: TransactionStatus;
-  className?: string;
-}
-
-export function TransactionStatusBadge({ status, className }: TransactionStatusBadgeProps) {
+export function TransactionStatusBadge({ status, className }) {
   const getStatusDetails = () => {
     switch (status) {
       case 'pending':
@@ -53,4 +46,4 @@ export function TransactionStatusBadge({ status, className }: TransactionStatusB
       {label}
     </span>
   );
-}
+} 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { usePayment } from '@/context/PaymentContext';
 import { Header } from '@/components/Header';
@@ -10,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 
 const Dashboard = () => {
   const { transactions } = usePayment();
-  const [filter, setFilter] = useState<'all' | 'pending' | 'success' | 'failed'>('all');
+  const [filter, setFilter] = useState('all');
   
   const filteredTransactions = filter === 'all' 
     ? transactions 
@@ -91,4 +90,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard; 

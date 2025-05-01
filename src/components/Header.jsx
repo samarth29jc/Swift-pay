@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CreditCard, LayoutDashboard } from 'lucide-react';
@@ -53,4 +52,4 @@ export function Header() {
       </div>
     </header>
   );
-}
+} 

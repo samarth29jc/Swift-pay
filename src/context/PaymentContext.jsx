@@ -1,38 +1,15 @@
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from "sonner";
 
-// Define the transaction type
-export type TransactionStatus = 'pending' | 'success' | 'failed';
-
-export interface Transaction {
-  id: string;
-  cardHolderName: string;
-  cardNumber: string;
-  expiryMonth: string;
-  expiryYear: string;
-  cardCVC: string;
-  amount: number;
-  currency: string;
-  status: TransactionStatus;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface PaymentContextType {
-  transactions: Transaction[];
-  addTransaction: (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => string;
-  updateTransactionStatus: (id: string, status: TransactionStatus) => void;
-  getTransaction: (id: string) => Transaction | undefined;
-}
-
-const PaymentContext = createContext<PaymentContextType | undefined>(undefined);
+const PaymentContext = createContext(undefined);
 
 // Simulated WebSocket for demo purposes
 class SimulatedWebSocket {
-  private callbacks: Map<string, (data: any) => void> = new Map();
-  private interval: ReturnType<typeof setInterval> | null = null;
-  private transactions: Transaction[] = [];
+  constructor() {
+    this.callbacks = new Map();
+    this.interval = null;
+    this.transactions = [];
+  }
 
   connect() {
     console.log('WebSocket connected');
@@ -43,7 +20,7 @@ class SimulatedWebSocket {
         if (pendingTransactions.length > 0) {
           const randomIndex = Math.floor(Math.random() * pendingTransactions.length);
           const transaction = pendingTransactions[randomIndex];
-          const newStatus: TransactionStatus = Math.random() > 0.3 ? 'success' : 'failed';
+          const newStatus = Math.random() > 0.3 ? 'success' : 'failed';
           
           this.sendEvent('transaction_updated', {
             id: transaction.id,
@@ -63,21 +40,21 @@ class SimulatedWebSocket {
     console.log('WebSocket disconnected');
   }
 
-  setTransactions(transactions: Transaction[]) {
+  setTransactions(transactions) {
     this.transactions = transactions;
   }
 
-  on(eventName: string, callback: (data: any) => void) {
+  on(eventName, callback) {
     this.callbacks.set(eventName, callback);
     return this;
   }
 
-  off(eventName: string) {
+  off(eventName) {
     this.callbacks.delete(eventName);
     return this;
   }
 
-  sendEvent(eventName: string, data: any) {
+  sendEvent(eventName, data) {
     const callback = this.callbacks.get(eventName);
     if (callback) {
       setTimeout(() => callback(data), 0);
@@ -85,8 +62,8 @@ class SimulatedWebSocket {
   }
 }
 
-export function PaymentProvider({ children }: { children: ReactNode }) {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+export function PaymentProvider({ children }) {
+  const [transactions, setTransactions] = useState([]);
   const [websocket] = useState(() => new SimulatedWebSocket());
 
   // Load transactions from localStorage on initial render
@@ -96,7 +73,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       try {
         const parsed = JSON.parse(savedTransactions);
         // Convert string dates back to Date objects
-        const withDates = parsed.map((t: any) => ({
+        const withDates = parsed.map(t => ({
           ...t,
           createdAt: new Date(t.createdAt),
           updatedAt: new Date(t.updatedAt)
@@ -134,11 +111,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
   }, [websocket]);
 
   // Add a new transaction
-  const addTransaction = (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'status'>): string => {
+  const addTransaction = (transaction) => {
     const now = new Date();
     const newId = `tx-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     
-    const newTransaction: Transaction = {
+    const newTransaction = {
       ...transaction,
       id: newId,
       status: 'pending',
@@ -158,7 +135,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
   };
 
   // Update a transaction's status
-  const updateTransactionStatus = (id: string, status: TransactionStatus) => {
+  const updateTransactionStatus = (id, status) => {
     setTransactions(prev => 
       prev.map(transaction => {
         if (transaction.id === id) {
@@ -174,7 +151,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
   };
 
   // Get a transaction by ID
-  const getTransaction = (id: string): Transaction | undefined => {
+  const getTransaction = (id) => {
     return transactions.find(transaction => transaction.id === id);
   };
 
@@ -191,4 +168,4 @@ export function usePayment() {
     throw new Error('usePayment must be used within a PaymentProvider');
   }
   return context;
-}
+} 

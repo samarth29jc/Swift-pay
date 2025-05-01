@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePayment } from '@/context/PaymentContext';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, XCircle, ArrowLeft, Clock3 } from 'lucide-react';
 
-const StatusDisplay = ({ status }: { status: string }) => {
+const StatusDisplay = ({ status }) => {
   switch (status) {
     case 'success':
       return (
@@ -49,7 +48,7 @@ const StatusDisplay = ({ status }: { status: string }) => {
 };
 
 const PaymentStatus = () => {
-  const { id, status } = useParams<{ id: string, status: string }>();
+  const { id, status } = useParams();
   const navigate = useNavigate();
   const { getTransaction } = usePayment();
   
@@ -97,4 +96,4 @@ const PaymentStatus = () => {
   );
 };
 
-export default PaymentStatus;
+export default PaymentStatus; 

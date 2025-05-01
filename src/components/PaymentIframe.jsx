@@ -2,26 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { generateOrderId } from '@/lib/card-validation';
 
-interface PaymentIframeProps {
-  onPaymentStatus: (status: 'success' | 'failed' | 'pending', orderId: string) => void;
-  paymentData?: {
-    cardholderName?: string;
-    cardNumber?: string;
-    expiryMonth?: string;
-    expiryYear?: string;
-    cardCVC?: string;
-    amount?: number;
-    currency?: string;
-  };
-}
-
-export function PaymentIframe({ onPaymentStatus, paymentData }: PaymentIframeProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+export function PaymentIframe({ onPaymentStatus, paymentData }) {
+  const iframeRef = useRef(null);
   const orderIdRef = useRef(generateOrderId());
 
   useEffect(() => {
     // Listen for messages from the iframe
-    const handleMessage = (event: MessageEvent) => {
+    const handleMessage = (event) => {
       // Verify that the message is from our iframe (security check)
       if (event.origin !== 'https://celalios.com') {
         return;
@@ -32,7 +19,7 @@ export function PaymentIframe({ onPaymentStatus, paymentData }: PaymentIframePro
         if (data && data.status) {
           // Update payment status based on iframe response
           onPaymentStatus(
-            data.status as 'success' | 'failed' | 'pending',
+            data.status,
             data.orderId || orderIdRef.current
           );
         }
@@ -94,4 +81,4 @@ export function PaymentIframe({ onPaymentStatus, paymentData }: PaymentIframePro
       </CardContent>
     </Card>
   );
-}
+} 
