@@ -1,6 +1,6 @@
 # Axipays Payment Dashboard
 
-A modern, secure, and user-friendly payment processing dashboard built with React and TypeScript. This application provides a seamless interface for managing payments and transactions through the Axipays platform.
+A modern, secure, and user-friendly payment processing dashboard built with JavaScript, React, and TypeScript. This application provides a seamless interface for managing payments and transactions through the Axipays platform.
 
 ## 🚀 Features
 
@@ -130,6 +130,38 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support, email support@axipays.com or join our Slack channel.
 
----
+## 🎯 High-Level Design Approach
 
-Built with ❤️ by the Axipays Team
+The Axipays Payment Dashboard was designed with a focus on security, scalability, and user experience. Here's how we approached the design:
+
+1. **Architecture**
+   - Component-based architecture using React
+   - Context API for global state management
+   - Modular design for easy maintenance and scalability
+   - Separation of concerns between UI, business logic, and data management
+
+2. **Security First**
+   - Implemented secure iframe-based payment processing
+   - Strict origin verification for cross-origin communication
+   - Sandboxed environment for payment processing
+   - Secure handling of sensitive payment data
+
+3. **Real-time Updates**
+   - WebSocket integration for instant status updates
+   - Optimistic UI updates for better user experience
+   - Local storage for transaction persistence
+   - Efficient state management for real-time data
+
+4. **User Experience**
+   - Intuitive and responsive design
+   - Clear feedback through toast notifications
+   - Smooth transitions and loading states
+   - Comprehensive error handling and recovery
+
+5. **Performance**
+   - Optimized component rendering
+   - Efficient data fetching with React Query
+   - Lazy loading for better initial load time
+   - Proper caching strategies
+
+---
